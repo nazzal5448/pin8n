@@ -9,14 +9,14 @@ Pin8n is a production-ready SaaS web application that generates blog content and
 - **Onboarding Wizard**: Step-by-step setup for WordPress and Pinterest connections
 - **Content Generation**: AI-powered blog post and image generation via n8n workflows
 - **Dashboard**: Overview of posts, images, and job history
-- **WordPress Integration**: Automatic publishing to WordPress sites via JWT
-- **Pinterest Integration**: Optional sharing of generated images
+- **WordPress Integration**: Automatic publishing to WordPress sites using username and application passwords.
+- **Pinterest Integration**: Automatic sharing of pins.
 - **Subscription Plans**: Basic ($25/month, 5 posts/day) and Pro ($75/month, 7 posts/day) plans via Paddle
 
 ### Technical Stack
 - **Frontend**: Next.js 14 (App Router) + TypeScript + Tailwind CSS + shadcn/ui
 - **Backend**: Next.js API routes
-- **Database**: PostgreSQL with Prisma ORM
+- **Database**: PostgreSQL with Prisma ORM / Firebase
 - **Authentication**: Custom JWT implementation
 - **Payments**: Paddle API integration
 - **Workflow**: n8n for content generation automation
@@ -26,7 +26,7 @@ Pin8n is a production-ready SaaS web application that generates blog content and
 
 ### Prerequisites
 - Node.js 18+ 
-- PostgreSQL database
+- PostgreSQL database. Firebase is good too.
 - n8n instance (for content generation workflows)
 - Paddle account (for payments)
 
@@ -136,11 +136,9 @@ src/
 - **WPAccount**: WordPress site connections with encrypted JWT tokens
 - **PinterestAccount**: Pinterest connections with encrypted access tokens
 - **Job**: Content generation jobs with status tracking
-- **Image**: Generated images linked to jobs
 
 ### Key Relationships
 - User has many WPAccounts, PinterestAccounts, and Jobs
-- Job has many Images
 - All sensitive tokens are encrypted before storage
 
 ## API Endpoints
@@ -171,7 +169,7 @@ src/
 2. **Job created** in database with PENDING status
 3. **n8n workflow triggered** via webhook with job details
 4. **AI generates content** (blog post + images) in n8n
-5. **Content published** to WordPress via JWT
+5. **Content published** to WordPress
 6. **Images shared** to Pinterest (if connected)
 7. **Job status updated** to COMPLETED
 8. **User notified** of completion
@@ -193,13 +191,8 @@ src/
 
 ### Database Setup
 - Use a managed PostgreSQL service (e.g., Supabase, Neon, Railway)
+- Firebase is preferred too.
 - Run migrations: `npm run db:push`
-
-### n8n Setup
-- Deploy n8n instance (self-hosted or cloud)
-- Create workflow for content generation
-- Configure webhook endpoint
-- Set up API key for secure communication
 
 ## Environment Variables
 
